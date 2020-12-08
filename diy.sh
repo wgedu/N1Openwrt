@@ -10,7 +10,7 @@ echo '修改机器名称'
 sed -i 's/OpenWrt/Phicomm-N1/g' package/base-files/files/bin/config_generate
 
 # Modify default IP
-sed -i 's/192.168.1.1/192.168.31.2/g' package/base-files/files/bin/config_generate
+sed -i 's/192.168.1.1/192.168.1.3/g' package/base-files/files/bin/config_generate
 
 echo '修改时区'
 sed -i "s/'UTC'/'CST-8'\n   set system.@system[-1].zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
@@ -39,6 +39,15 @@ git clone --depth=1 https://github.com/jerrykuku/luci-app-jd-dailybonus
 
 # Add ServerChan
 git clone --depth=1 https://github.com/tty228/luci-app-serverchan
+
+# Add Freifunk
+git clone --depth=1 https://github.com/freifunk/openwrt-packages.git
+
+# Add Lienol
+git clone --depth=1 https://github.com/Lienol/openwrt-package.git;main
+
+# Add PassWall
+git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall.git;main
 
 # Add luci-theme-argon
 git clone --depth=1 -b 18.06 https://github.com/jerrykuku/luci-theme-argon
