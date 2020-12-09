@@ -130,18 +130,12 @@ jobs:
         cd openwrt/bin/targets/*/*
         rm -rf packages
         
-    - name: Create release
-      if: env.RELEASE == 'true' && !cancelled()
-      uses: ncipollo/release-action@v1
+    - name: Upload firmware directory
+      uses: actions/upload-artifact@main
+      if: steps.organize.outputs.status == 'success' && !cancelled()
       with:
-        name: ${{ env.DATE }} 🚀 / N1-Openwrt | 编译
-        allowUpdates: true
-        tag: ${{ env.tag_name }}
-        commit: master
-        token: ${{ secrets.RELEASES_TOKEN  }}
-        body: |
-          当前使用版本:（编译前的最后一次源码更新记录）
-        artifacts: "${{ env.FIRMWARE }}/*.tar.gz,${{ env.FIRMWARE }}/*.tar.xz"  
+        name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        path: ${{ env.FIRMWARE }}
 
     - name: Upload firmware to cowtransfer
       id: cowtransfer
@@ -161,8 +155,6 @@ jobs:
         ./transfer wet -s -p 16 --no-progress ${FIRMWARE} 2>&1 | tee wetransfer.log
         echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
         echo "::set-output name=url::$(cat wetransfer.log | grep https | cut -f3 -d" ")"
-
-
 
     - name: Generate release tag
       id: tag
